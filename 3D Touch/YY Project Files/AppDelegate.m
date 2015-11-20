@@ -60,7 +60,7 @@
 }
 
 #pragma mark ---> 响应标签的行为
-- (void)application:(UIApplication *)application performActionForShortcutItem:(UIApplicationShortcutItem *)shortcutItem completionHandler:(void(^)(BOOL succeeded))completionHandler{
+- (void)application:(UIApplication *)application performActionForShortcutItem:(UIApplicationShortcutItem *)shortcutItem completionHandler:(void(^)(BOOL succeeded))completionHandler {
     
     [NOTIFICATION_CENTER postNotificationName:JUMP_TO_CONTROLLER object:shortcutItem.userInfo];
 }

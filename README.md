@@ -1,8 +1,8 @@
 # 3DTouchDemo
 
 ## 效果图 
- ![效果1](https://github.com/FutureSo/3DTouchDemo/blob/master/Resource/%E6%95%88%E6%9E%9C1.gif)    
- ![效果2](https://github.com/FutureSo/3DTouchDemo/blob/master/Resource/%E6%95%88%E6%9E%9C2.gif)     
+ ![效果1](https://github.com/FutureSo/3DTouchDemo/blob/master/Resource/%E6%95%88%E6%9E%9C1.gif)
+ ![效果2](https://github.com/FutureSo/3DTouchDemo/blob/master/Resource/%E6%95%88%E6%9E%9C2.gif)
  ![效果3](https://github.com/FutureSo/3DTouchDemo/blob/master/Resource/%E6%95%88%E6%9E%9C3.gif)
 
 # 让我们开始吧👇
@@ -48,14 +48,14 @@
     	}
   >		}
   	
-## step2 : 配置标签
+## Step2 : 配置标签
 
 	iOS9为我们提供了两种屏幕标签，分别是静态标签和动态标签。
 	在此Demo中，是使用静态标签配置的。
   
 ### 1.静态标签
 
-		静态标签是我们在项目的配置plist文件中配置的标签，在用户安装程序后就可以使用，并且排序会在动态标签的前面。
+静态标签是我们在项目的配置plist文件中配置的标签，在用户安装程序后就可以使用，并且排序会在动态标签的前面。
 		
 ![配置标签1](https://github.com/FutureSo/3DTouchDemo/blob/master/Resource/%E9%85%8D%E7%BD%AE%E6%A0%87%E7%AD%BE1.png)
 
@@ -139,4 +139,111 @@
 	UIApplicationShortcutItemUserInfo  设置信息字典(用于传值)
 我们如上截图设置后，运行程序，用我们前面的方法进行测试，效果如下：
 
+![标签效果](https://github.com/FutureSo/3DTouchDemo/blob/master/Resource/%E6%A0%87%E7%AD%BE%E6%95%88%E6%9E%9C.png)
+
 ### 2.动态标签  	
+
+动态标签是我们在程序中，通过代码添加的。
+在 **AppDelegate.m** 中调用 **[self create3DTouchShotItems];** 方法即可实现动态标签。
+
+### 3.响应标签的行为
+
+类似推送，当我们点击标签进入应用程序时，也可以进行一些操作，我们可以看到，在applocation中增加了这样一个方法：
+
+>		- (void)application:(UIApplication *)application performActionForShortcutItem:(UIApplicationShortcutItem *)shortcutItem completionHandler:(void(^)(BOOL succeeded))completionHandler {
+>		
+    	[NOTIFICATION_CENTER postNotificationName:JUMP_TO_CONTROLLER object:shortcutItem.userInfo];
+>		}
+		
+#### 注意：
+
+1.快捷标签最多可以创建四个，包括静态的和动态的。
+
+2.每个标签的题目和icon最多两行，多出的会用……省略。
+
+## Step3 : 注册3D Touch事件
+
+1. 首先，遵循__UIViewControllerPreviewingDelegate__协议。
+2. 通过
+>		- (id <UIViewControllerPreviewing>)registerForPreviewingWithDelegate:(id<UIViewControllerPreviewingDelegate>)delegate sourceView:(UIView *)sourceView NS_AVAILABLE_IOS(9_0); 
+
+进行3D Touch注册。	
+
+## Step 4 : 完成UIViewControllerPreviewingDelegate 协议回调，实现Peek Pop
+在__YYFirstViewController.m__中
+
+##### peek 代码
+
+	- (UIViewController *)previewingContext:(id<UIViewControllerPreviewing>)previewingContext viewControllerForLocation:(CGPoint)location {
+    	// 防止重复加入
+    	if ([self.presentedViewController isKindOfClass:[YYFirstPeekViewController class]]) {
+        	return nil;
+    	} else {
+        	YYFirstPeekViewController * peekVC = [[YYFirstPeekViewController alloc] init];
+        	peekVC.peek_dictionary = @{@"imageName":@"lomo1.jpg",
+                                   		@"title":@"First ImageView 3D Touch"};
+        	return peekVC;
+    	}
+	}
+
+##### pop 代码
+
+	 //此方法是重按peek时，跳入pop的代理方法
+	- (void)previewingContext:(id<UIViewControllerPreviewing>)previewingContext commitViewController:(UIViewController *)viewControllerToCommit {
+    	YYFirstPopViewController * popVC = [[YYFirstPopViewController alloc] init];
+    	popVC.pop_dictionary = @{@"imageName":@"lomo1.jpg",
+                             		@"title":@"First ImageView 3D Touch"};
+	//    [self showViewController:popVC sender:self];
+    	[self.navigationController pushViewController:popVC animated:YES];
+	}
+	
+## Step5 : 在Peek状态下向上滑动出现的按钮配置方法
+
+ 在 **YYFirstPeekViewController.m**  
+ 完成  ** - (NSArray<id<UIPreviewActionItem>> *)previewActionItems **  回调方法  
+>代码如下:
+
+	- (NSArray <id <UIPreviewActionItem>> *)previewActionItems {
+    
+    	// 生成UIPreviewAction
+    	UIPreviewAction * comment = [UIPreviewAction actionWithTitle:@"评论" style:UIPreviewActionStyleDefault handler:^(UIPreviewAction * _Nonnull action, UIViewController * _Nonnull previewViewController) {
+        	NSLog(@"评论");
+        	[NOTIFICATION_CENTER postNotificationName:CHANGE_FIRST_LABEL_TEXT object:@"RecordStateLabel:评论"];
+    	}];
+    
+    	UIPreviewAction * collect = [UIPreviewAction actionWithTitle:@"收藏" style:UIPreviewActionStyleDefault handler:^(UIPreviewAction * _Nonnull action, UIViewController * _Nonnull previewViewController) {
+        	NSLog(@"收藏");
+        	[NOTIFICATION_CENTER postNotificationName:CHANGE_FIRST_LABEL_TEXT object:@"RecordStateLabel:收藏"];
+    	}];
+    
+    	UIPreviewAction * shareWeibo = [UIPreviewAction actionWithTitle:@"分享至微博" style:UIPreviewActionStyleDefault handler:^(UIPreviewAction * _Nonnull action, UIViewController * _Nonnull previewViewController) {
+        	NSLog(@"分享至微博");
+        	[NOTIFICATION_CENTER postNotificationName:CHANGE_FIRST_LABEL_TEXT object:@"RecordStateLabel:分享至微博"];
+    	}];
+    
+    UIPreviewAction * shareWeChat = [UIPreviewAction actionWithTitle:@"分享至微信好友" style:UIPreviewActionStyleDefault handler:^(UIPreviewAction * _Nonnull action, UIViewController * _Nonnull previewViewController) {
+        NSLog(@"分享至微信好友");
+        [NOTIFICATION_CENTER postNotificationName:CHANGE_FIRST_LABEL_TEXT object:@"RecordStateLabel:分享至微信好友"];
+    }];
+    
+    	UIPreviewAction * shareFriendsCircle = [UIPreviewAction actionWithTitle:@"分享至微信朋友圈" style:UIPreviewActionStyleDefault handler:^(UIPreviewAction * _Nonnull action, UIViewController * _Nonnull previewViewController) {
+        	NSLog(@"分享至微信朋友圈");
+        	[NOTIFICATION_CENTER postNotificationName:CHANGE_FIRST_LABEL_TEXT object:@"RecordStateLabel:分享至微信朋友圈"];
+    	}];
+    
+    	UIPreviewAction * shareQQZone = [UIPreviewAction actionWithTitle:@"分享至QQ空间" style:UIPreviewActionStyleDefault handler:^(UIPreviewAction * _Nonnull action, UIViewController * _Nonnull previewViewController) {
+        	NSLog(@"分享至QQ空间");
+        	[NOTIFICATION_CENTER postNotificationName:CHANGE_FIRST_LABEL_TEXT object:@"RecordStateLabel:分享至QQ空间"];
+    	}];
+    
+    	// 塞到UIPreviewActionGroup中
+    	NSArray * shareActionArray   = @[shareWeibo,shareWeChat,shareFriendsCircle,shareQQZone];
+    	UIPreviewActionGroup *group1 = [UIPreviewActionGroup actionGroupWithTitle:@"分享" style:UIPreviewActionStyleDefault actions:shareActionArray];
+    	NSArray *group = @[comment,collect,group1];
+    
+    	return group;
+	}
+	
+## Step 6 : 注意事项
+>如果Pop界面有对导航栏，或者工具栏进行隐藏或者显示的操作，需要去peek中设置。
+>我的微博：[@Future_sy](http://weibo.com/u/5667726430?topnav=1&wvr=6&topsug=1)
