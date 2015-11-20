@@ -18,9 +18,9 @@
                 UIForceTouchCapabilityAvailable      = 2
    >       };    
    
-   >	UIForceTouchCapabilityUnknown			// 3D Touch检测失败
-   >	UIForceTouchCapabilityUnavailable		// 3D Touch不可用
-   >	UIForceTouchCapabilityAvailable			// 3D Touch可用
+   >		UIForceTouchCapabilityUnknown			// 3D Touch检测失败
+   >		UIForceTouchCapabilityUnavailable		// 3D Touch不可用
+   >		UIForceTouchCapabilityAvailable			// 3D Touch可用
    
 ### 定义一个BOOL属性
   在 *YYBaseViewController.h* 中定义属性：
