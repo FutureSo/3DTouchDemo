@@ -246,4 +246,5 @@
 	
 ## Step 6 : 注意事项
 >如果Pop界面有对导航栏，或者工具栏进行隐藏或者显示的操作，需要去peek中设置。
+
 >我的微博：[@Future_sy](http://weibo.com/u/5667726430?topnav=1&wvr=6&topsug=1)
