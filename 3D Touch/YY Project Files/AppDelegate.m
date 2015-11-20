@@ -21,8 +21,8 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
     // 代码创建快捷视图列表的方法:
-    // 创建快捷视图列表有两种方法，一种是用代码写，另一种是编辑info.plist文件中的UIApplicationShortcutItems
-    // 此Demo中直接使用编辑info.plist的方法创建
+    // 创建快捷视图列表有两种方法，一种是用代码写，另一种是编辑Info.plist文件中的UIApplicationShortcutItems
+    // 此Demo中直接使用编辑Info.plist的方法创建
     //    [self create3DTouchShotItems];
     
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
