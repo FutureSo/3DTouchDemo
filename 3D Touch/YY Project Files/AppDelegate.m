@@ -20,6 +20,11 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
+    // 代码创建快捷视图列表的方法:
+    // 创建快捷视图列表有两种方法，一种是用代码写，另一种是编辑info.plist文件中的UIApplicationShortcutItems
+    // 此Demo中直接使用编辑info.plist的方法创建
+    //    [self create3DTouchShotItems];
+    
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.window.backgroundColor = [UIColor whiteColor];
     
@@ -30,6 +35,31 @@
     return YES;
 }
 
+// 代码方式创建
+- (void)create3DTouchShotItems {
+    //创建快捷item的icon UIApplicationShortcutItemIconFile
+    UIApplicationShortcutIcon *icon1 = [UIApplicationShortcutIcon iconWithTemplateImageName:@"touchIcon1@3x.png"];
+    UIApplicationShortcutIcon *icon2 = [UIApplicationShortcutIcon iconWithTemplateImageName:@"touchIcon2@3x.png"];
+    UIApplicationShortcutIcon *icon3 = [UIApplicationShortcutIcon iconWithTemplateImageName:@"touchIcon3@3x.png"];
+    UIApplicationShortcutIcon *icon4 = [UIApplicationShortcutIcon iconWithTemplateImageName:@"touchIcon4@3x.png"];
+    
+    //创建快捷item的userinfo UIApplicationShortcutItemUserInfo
+    NSDictionary *info1 = @{@"index":@"0"};
+    NSDictionary *info2 = @{@"index":@"1"};
+    NSDictionary *info3 = @{@"index":@"2"};
+    NSDictionary *info4 = @{@"index":@"3"};
+
+    //创建ShortcutItem
+    UIMutableApplicationShortcutItem *item1 = [[UIMutableApplicationShortcutItem alloc]initWithType:[NSString stringWithFormat:@"%@.first",[[NSBundle mainBundle] bundleIdentifier]] localizedTitle:@"First" localizedSubtitle:@"FirstController" icon:icon1 userInfo:info1];
+    UIMutableApplicationShortcutItem *item2 = [[UIMutableApplicationShortcutItem alloc]initWithType:[NSString stringWithFormat:@"%@.second",[[NSBundle mainBundle] bundleIdentifier]] localizedTitle:@"Second" localizedSubtitle:@"SecondController" icon:icon2 userInfo:info2];
+    UIMutableApplicationShortcutItem *item3 = [[UIMutableApplicationShortcutItem alloc]initWithType:[NSString stringWithFormat:@"%@.third",[[NSBundle mainBundle] bundleIdentifier]] localizedTitle:@"Third" localizedSubtitle:nil icon:icon3 userInfo:info3];
+    UIMutableApplicationShortcutItem *item4 = [[UIMutableApplicationShortcutItem alloc]initWithType:[NSString stringWithFormat:@"%@.fourth",[[NSBundle mainBundle] bundleIdentifier]] localizedTitle:@"Fourth" localizedSubtitle:@"第四" icon:icon4 userInfo:info4];
+    
+    NSArray *items = @[item1, item2, item3, item4];
+    [UIApplication sharedApplication].shortcutItems = items;
+}
+
+#pragma mark ---> 响应标签的行为
 - (void)application:(UIApplication *)application performActionForShortcutItem:(UIApplicationShortcutItem *)shortcutItem completionHandler:(void(^)(BOOL succeeded))completionHandler{
     
     [NOTIFICATION_CENTER postNotificationName:JUMP_TO_CONTROLLER object:shortcutItem.userInfo];
