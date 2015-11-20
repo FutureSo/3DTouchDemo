@@ -1,0 +1,14 @@
+//
+//  YY3DTouch.pch
+//  3D Touch
+//
+//  Created by 殷悦 on 15/11/19.
+//  Copyright © 2015年 Zealinfo. All rights reserved.
+//
+
+#ifndef YY3DTouch_pch
+#define YY3DTouch_pch
+
+#import "YYMacro.h"
+
+#endif /* YY3DTouch_pch */
