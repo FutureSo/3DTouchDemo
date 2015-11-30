@@ -45,14 +45,18 @@
 - (NSArray <id <UIPreviewActionItem>> *)previewActionItems {
     
     // 生成UIPreviewAction
-    UIPreviewAction * like = [UIPreviewAction actionWithTitle:@"赞" style:UIPreviewActionStyleDefault handler:^(UIPreviewAction * _Nonnull action, UIViewController * _Nonnull previewViewController) {
-        NSLog(@"点赞");
-        [NOTIFICATION_CENTER postNotificationName:CHANGE_THIRD_LABEL_TEXT object:@"点击 赞"];
+    UIPreviewAction * like = [UIPreviewAction actionWithTitle:@"跳转 lomo1" style:UIPreviewActionStyleDefault handler:^(UIPreviewAction * _Nonnull action, UIViewController * _Nonnull previewViewController) {
+        
+        [NOTIFICATION_CENTER postNotificationName:JUMP_THIRD_POP_CONTROLLER object:@{@"imageName":@"lomo1.jpg",
+                                                                                     @"title":@"Second ImageView 3D Touch",
+                                                                                     @"subTitle":@"君为袖手旁观客，我亦逢场作戏人！"}];
     }];
     
-    UIPreviewAction * comment = [UIPreviewAction actionWithTitle:@"储存" style:UIPreviewActionStyleDefault handler:^(UIPreviewAction * _Nonnull action, UIViewController * _Nonnull previewViewController) {
-        NSLog(@"储存");
-        [NOTIFICATION_CENTER postNotificationName:CHANGE_THIRD_LABEL_TEXT object:@"点击 存储"];
+    UIPreviewAction * comment = [UIPreviewAction actionWithTitle:@"跳转 lomo2" style:UIPreviewActionStyleDefault handler:^(UIPreviewAction * _Nonnull action, UIViewController * _Nonnull previewViewController) {
+        
+        [NOTIFICATION_CENTER postNotificationName:JUMP_THIRD_POP_CONTROLLER object:@{@"imageName":@"lomo2.jpg",
+                                                                                     @"title":@"Second ImageView 3D Touch",
+                                                                                     @"subTitle":@"君为袖手旁观客，我亦逢场作戏人！"}];
     }];
     
     NSArray *group = @[like,comment];

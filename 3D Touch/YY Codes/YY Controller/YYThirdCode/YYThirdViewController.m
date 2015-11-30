@@ -14,18 +14,11 @@
 @interface YYThirdViewController ()<UIViewControllerPreviewingDelegate>
 
 @property (nonatomic, strong) YYThirdTouchView * touchView;
-@property (nonatomic, strong) UILabel * recordStateLabel;
 
 @end
 
 @implementation YYThirdViewController
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    if (self.recordStateLabel) {
-        self.recordStateLabel.text = @"";
-    }
-}
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.isSupport3DTouch = [self check3DTouch];
@@ -40,12 +33,7 @@
     lomoImageView.userInteractionEnabled = YES;
     [self.view addSubview:lomoImageView];
     
-    self.recordStateLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(lomoImageView.frame)+30, DEVICE_SCREEN_WIDTH-20, 20)];
-    self.recordStateLabel.textAlignment = NSTextAlignmentCenter;
-    self.recordStateLabel.font = [UIFont fontWithName:@"Marker Felt" size:16];
-    [self.view addSubview:self.recordStateLabel];
-    
-    [NOTIFICATION_CENTER addObserver:self selector:@selector(changeStateLabelText:) name:CHANGE_THIRD_LABEL_TEXT object:nil];
+    [NOTIFICATION_CENTER addObserver:self selector:@selector(changeStateLabelText:) name:JUMP_THIRD_POP_CONTROLLER object:nil];
     
     // 注册
     if (self.isSupport3DTouch) {
@@ -59,7 +47,10 @@
 
 - (void)changeStateLabelText:(NSNotification *)notify {
 
-    self.recordStateLabel.text = [notify object];
+    YYThirdPopViewController * popVC = [[YYThirdPopViewController alloc] init];
+    popVC.pop_dictionary = [notify object];
+    //    [self showViewController:popVC sender:self];
+    [self.navigationController pushViewController:popVC animated:YES];
 }
 
 - (void)setUpThirdTouchView {

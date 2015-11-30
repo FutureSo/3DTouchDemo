@@ -19,7 +19,7 @@
 #define NOTIFICATION_CENTER         [NSNotificationCenter defaultCenter]
 
 #define CHANGE_FIRST_LABEL_TEXT     @"changeRecordStateLabelText"
-#define CHANGE_THIRD_LABEL_TEXT     @"changeThirdRecordStateLabelText"
+#define JUMP_THIRD_POP_CONTROLLER   @"jumpToThirdPopController"
 #define JUMP_TO_CONTROLLER          @"jumpToController"
 
 #endif /* YYMacro_h */
